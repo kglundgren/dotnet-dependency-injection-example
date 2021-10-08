@@ -8,7 +8,7 @@ namespace DIExample.Api.Managers
 {
     public interface ICustomerManager
     {
-        Customer GetCustomer();
+        Customer GetCustomer(int number);
         List<Customer> GetAll();
     }
 }

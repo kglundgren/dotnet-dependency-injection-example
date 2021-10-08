@@ -21,10 +21,9 @@ namespace DIExample.Api.Managers
             return Customers;
         }
 
-        public Customer GetCustomer()
+        public Customer GetCustomer(int number)
         {
-            var rng = new Random();
-            return Customers[rng.Next(0, Customers.Count - 1)];
+            return Customers[number];
         }
     }
 }

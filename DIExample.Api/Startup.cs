@@ -39,6 +39,7 @@ namespace DIExample.Api
 
         private void ConfigDeveloperEnvironment(IServiceCollection services)
         {
+            // Dependency injection
             if (DevEnvProd) {
                 services.AddScoped<ICustomerManager, RealDbCustomerManager>();
             } else {

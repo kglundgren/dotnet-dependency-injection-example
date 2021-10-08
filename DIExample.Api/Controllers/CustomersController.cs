@@ -1,4 +1,5 @@
 ﻿using DIExample.Api.Managers;
+using DIExample.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,25 +24,18 @@ namespace DIExample.Api.Controllers
             CustomerManager = customerManager;
         }
 
-        // GET: api/<CustomersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/<CustomersController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Customer Get(int id)
         {
-            return "value";
+            return CustomerManager.GetCustomer(id);
         }
 
-        [HttpGet("{id}")]
-        public string GetCustomers()
+        // GET api/<CustomersController>
+        [HttpGet]
+        public List<Customer> GetCustomers()
         {
-            CustomerManager.GetAll();
-            return "";
+            return CustomerManager.GetAll();
         }
 
         // POST api/<CustomersController>

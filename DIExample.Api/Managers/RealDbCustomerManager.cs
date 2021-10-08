@@ -11,13 +11,11 @@ namespace DIExample.Api.Managers
 {
     public class RealDbCustomerManager : ICustomerManager
     {
-        private readonly ICustomerManager CustomerManager;
         private readonly DbContext Database;
         private List<Customer> Customers;
 
-        public RealDbCustomerManager(ICustomerManager customerManager)
+        public RealDbCustomerManager()
         {
-            CustomerManager = customerManager;
             Database = new DbContext();
             SetupDb();
             Customers = FetchCustomers();
@@ -28,10 +26,9 @@ namespace DIExample.Api.Managers
             return Customers;
         }
 
-        public Customer GetCustomer()
+        public Customer GetCustomer(int number)
         {
-            var rng = new Random();
-            return Customers[rng.Next(0, Customers.Count - 1)];
+            return Customers[number];
         }
 
         private void SetupDb()
