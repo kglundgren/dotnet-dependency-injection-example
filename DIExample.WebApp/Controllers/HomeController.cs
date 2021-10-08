@@ -1,6 +1,8 @@
 ﻿using DIExample.WebApp.Models;
+using DIExample.WebApp.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,16 +13,19 @@ namespace DIExample.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> Logger;
+        private readonly IOptionsMonitor<ApiOptions> ApiOptions;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IOptionsMonitor<ApiOptions> apiOptions)
         {
-            _logger = logger;
+            Logger = logger;
+            ApiOptions = apiOptions;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = new IndexModel { ApiUrl = ApiOptions.CurrentValue.Url };
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -1,8 +1,95 @@
-﻿@{
+﻿@model IndexModel;
+
+@{
     ViewData["Title"] = "Home Page";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/index.css" />
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="main">
+    <section class="get-all-customers">
+        <button id="getAllCustomersBtn">Get All Customers</button>
+    </section>
+    <section class="get-customer">
+        <div class="customer-dropdown">
+            <p>Select customer number. </p>
+            <select>
+                @{
+                    for (int i = 1; i <= 10; i++) {
+                        <option value="@i">@i</option>
+                    }}
+            </select>
+        </div>
+        <button id="getCustomerByIdBtn">Get Customer</button>
+    </section>
+    <section id="sectionCustomerList" class="customer-list" >
+        <ul id="customerList"></ul>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        const getAllCustomersBtn = document.querySelector('#getAllCustomersBtn');
+        const getCustomerByIdBtn = document.querySelector('#getCustomerByIdBtn');
+        const selectedId = document.querySelector('select');
+        const customerList = document.querySelector('#customerList');
+        const sectionCustomerList = document.querySelector('#sectionCustomerList');
+        const apiUrl = '@Model.ApiUrl';
+
+        function getAllCustomers() {
+            fetch(apiUrl).then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                    createCustomerList(json);
+                });
+        }
+
+        function getCustomer() {
+            fetch(apiUrl + `/${selectedId.value}`).then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                    displayCustomer(json);
+                });
+        }
+
+        function displayCustomer(customer) {
+            customerList.innerHTML = '';
+            const li = document.createElement('li');
+            setLiHTML(li, customer);
+            customerList.appendChild(li);
+            displaySectionCustomerList();
+        }
+
+        function createCustomerList(customers) {
+            customerList.innerHTML = '';
+            for (const [key, customer] of Object.entries(customers)) {
+                const li = document.createElement('li');
+                setLiHTML(li, customer);
+                customerList.appendChild(li);
+            }
+            displaySectionCustomerList();
+        }
+
+        function displaySectionCustomerList() {
+            sectionCustomerList.style.display = 'block';
+        }
+
+        function setLiHTML(li, customer) {
+            li.innerHTML =
+                `Name: ${customer.name}` +
+                `<br />` +
+                `Id: ${customer.id}` +
+                `<br />` +
+                `Number: ${customer.number}`;
+        }
+
+        getAllCustomersBtn.addEventListener('click', getAllCustomers);
+        getCustomerByIdBtn.addEventListener('click', getCustomer);
+    </script>
+}

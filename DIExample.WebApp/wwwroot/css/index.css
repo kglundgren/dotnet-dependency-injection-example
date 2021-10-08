@@ -1,0 +1,56 @@
+﻿:root {
+    --button-color: #04AA6D;
+}
+
+button,
+input[type=submit] {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.main {
+    display: grid;
+    justify-content: center;
+    grid-template-areas: "top" "mid" "bottom";
+    grid-template-columns: 50%;
+}
+
+section {
+    border: 4px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin: 20px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customer-dropdown {
+    display: flex;
+    align-items: baseline;
+}
+
+.customer-dropdown p {
+    margin-right: 10px;
+}
+
+.get-all-customers {
+    grid-area: top;
+}
+
+.get-customer {
+    grid-area: mid;
+}
+
+.customer-list {
+    display: none;
+    grid-area: bottom;
+}
+
+.customer-list li {
+    margin: 10px;
+}
