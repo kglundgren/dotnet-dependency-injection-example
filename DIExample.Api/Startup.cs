@@ -18,11 +18,15 @@ namespace DIExample.Api
     public class Startup
     {
         private readonly bool DevEnvProd;
+        private readonly string CustomPolicy;
+        private readonly string[] AllowedOrigins;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             DevEnvProd = bool.Parse(Configuration.GetSection("DevEnv")["Prod"]);
+            CustomPolicy = "customPolicy";
+            AllowedOrigins = Configuration.GetSection(nameof(AllowedOrigins)).GetChildren().Select(s => s.Value).ToArray();
         }
 
         public IConfiguration Configuration { get; }
@@ -35,6 +39,13 @@ namespace DIExample.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DIExample.Api", Version = "v1" });
             });
             ConfigDeveloperEnvironment(services);
+            services.AddCors(options => {
+                options.AddPolicy(name: CustomPolicy, builder => {
+                    builder.WithOrigins(AllowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
         }
 
         private void ConfigDeveloperEnvironment(IServiceCollection services)
@@ -59,6 +70,8 @@ namespace DIExample.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CustomPolicy);
 
             app.UseAuthorization();
 

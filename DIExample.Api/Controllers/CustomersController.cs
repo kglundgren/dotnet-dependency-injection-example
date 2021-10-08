@@ -26,9 +26,10 @@ namespace DIExample.Api.Controllers
 
         // GET api/<CustomersController>/5
         [HttpGet("{id}")]
-        public Customer Get(int id)
+        public IActionResult Get(int id)
         {
-            return CustomerManager.GetCustomer(id);
+            if(id >= 1 && id <= 10) return Ok(CustomerManager.GetCustomer(id -1));
+            return BadRequest("Select a customer between 1-10.");
         }
 
         // GET api/<CustomersController>
